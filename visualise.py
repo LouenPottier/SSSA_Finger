@@ -28,17 +28,20 @@ with st.sidebar:
     st.subheader('Pressure inside the beam')
     
     P = st.slider('P',0.,0.1,0.,0.01)
-    D = st.slider('D',14.,24.,18.5,0.1)
+    D = st.slider('D',14.,24.,23.5,0.1)
+    invrigi = st.slider('k^-1',0.,20.,0.,1.)
+
+    
 
 
     #f=torch.tensor([[fx,fy]],dtype=torch.float32)/5000
     
-    def apply(D,P):
-        u,f=contact(D,P)
+    def apply(D,P,invrigi):
+        u,f=contact(D,P,invrigi)
         u=(u-u_mean)/u_scale
         st.session_state['h_fclat'] = fclat.enc_u(u)
         
-    st.button('Apply load',on_click=apply,args=(D,P))
+    st.button('Apply load',on_click=apply,args=(D,P,invrigi))
     
     
     
@@ -69,6 +72,8 @@ f_pred=fclat(u)*f_scale+f_mean
 fx=f_pred[0,1].detach()
 fz=f_pred[0,2].detach()
 
+D1=max(min(-fz*invrigi+D,D),14.)
+
 u=u*u_scale + u_mean
 X, Z = beam_from_endpoint(float(u[0,0]),float(u[0,1]),float(u[0,2]))
 
@@ -81,6 +86,16 @@ fig2.add_trace(
     row=1, col=1,
 
 )
+
+
+
+fig2.add_trace(
+    go.Scatter(x=[D1-52.1,D1-52.1],y=[0,-56.],     name='',
+),
+    row=1, col=1,
+
+)
+
 
 fig2.add_trace(
     go.Scatter(x=[D-52.1,D-52.1],y=[0,-56.],     name='',

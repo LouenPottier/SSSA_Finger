@@ -263,7 +263,7 @@ def proj(u):
 
 
 
-def contact(D,P):
+def contact(D,P,invrigi=10.):
     u0=(torch.tensor([[56.,13.,0.]])-u_mean)/u_scale
 
     f=torch.zeros(1,3)
@@ -271,13 +271,21 @@ def contact(D,P):
     f=(f-f_mean)/f_scale
     #u=fclat.backward(f, u0)
     u=fclatFtD.backward(f)
-    if u[0,1]*u_scale[1]+u_mean[1]+D<52.1 and u[0,1]*u_scale[1]+u_mean[1]>0.:
+    u=proj(u)
+    if u[0,1]*u_scale[1]+u_mean[1]+D<52.1:
         #no contact
         return u*u_scale+u_mean, f*f_scale+f_mean
     else:
-        #contact : u[:,1]*u_scale[1]+u_mean[1]+D should equal 52.
-        u[:,1]=(52.-D-u_mean[1])/u_scale[1]
+        #contact : u[:,1]*u_scale[1]+u_mean[1]+D should equal 52.1 if the plan is rigid
+        #           otherwise k(D1-D0)=f_z => D1=-f_z/k+D0
+        #           and u[:,1]*u_scale[1]+u_mean[1]+D1 should equal 52.1
         
+
+        f_z=(f*f_scale+f_mean)[0,2]
+        D1=max(min(-f_z*invrigi+D,D),14.)
+        u[:,1]=(52.1-D1-u_mean[1])/u_scale[1]
+
+
         u=proj(u)
         x0=u[:,[0,2]]
         #x0[0,0]=x0[0,0]/2   
@@ -288,10 +296,19 @@ def contact(D,P):
         xn=nn.Parameter(x0)
         optimizer=torch.optim.Adam([xn],lr=0.05)
         
-        def criterion(x):
+        def criterion(x,f):
             u=torch.zeros(1,3)
             u[:,[0,2]]=x     
-            u[:,1]=(52.1-D-u_mean[1])/u_scale[1]
+            
+            
+
+            f_z=(f*f_scale+f_mean)[0,2]
+            D1=max(min(-f_z*invrigi+D,D),14.)
+            u[:,1]=(52.1-D1-u_mean[1])/u_scale[1]
+
+            
+            
+            #u[:,1]=(52.1-D-u_mean[1])/u_scale[1]
             f=fclat(u)
 
             return torch.sum((f[0,0]-(P-f_mean[0])/f_scale[0])**2)  
@@ -300,29 +317,41 @@ def contact(D,P):
         nmax=100
         i=0
 
-        while criterion(xn)>tol and i<nmax:
+        while criterion(xn,f)>tol and i<nmax:
+            
+            
+
             i+=1
             optimizer.zero_grad()
-            err=criterion(xn)
+            err=criterion(xn,f)
             err.backward()
             optimizer.step()
 
             u=torch.zeros(1,3)
             u[:,[0,2]]=xn   
-            u[:,1]=(52.-D-u_mean[1])/u_scale[1]
+            
+            
+
+            f_z=(f*f_scale+f_mean)[0,2]
+            D1=max(min(-f_z*invrigi+D,D),14.)
+            u[:,1]=(52.1-D1-u_mean[1])/u_scale[1]
+
+
+            #u[:,1]=(52.-D-u_mean[1])/u_scale[1]
         
             u=proj(u)
+            f=fclat(u)
+
 
             #xn[0,0].data.clamp((0.-u_mean[0])/u_scale[0],(56.-u_mean[0])/u_scale[0])
             #xn[0,1].data.clamp((-100.-u_mean[2])/u_scale[2],(0.-u_mean[2])/u_scale[2])
             xn.data=u[:,[0,2]]
-        
-        u=torch.zeros(1,3)
-        u[:,[0,2]]=xn   
-        u[:,1]=(52.1-D-u_mean[1])/u_scale[1]
-        f=fclat(u)
-        return u*u_scale+u_mean, f*f_scale+f_mean
+            
 
+
+        
+
+        return u*u_scale+u_mean, f*f_scale+f_mean
 
 
 
