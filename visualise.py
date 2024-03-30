@@ -49,7 +49,7 @@ with st.sidebar:
     
     
     
-    st.subheader('Back to origin in latent space')
+    #st.subheader('Back to initial configuration')
 
     
     def raz():
@@ -58,7 +58,7 @@ with st.sidebar:
 
 
     
-    st.button('Reset',on_click=raz)
+    #st.button('Reset',on_click=raz)
     
     
     
