@@ -68,7 +68,7 @@ with st.sidebar:
 
 ##### PLOT FCLAT
 
-st.subheader("Contact simulation with learned relation (P,fx,fz)=NN(ux,uz,ry)")
+st.subheader("Contact simulation with learnt relation (P,fx,fz)=NN(ux,uz,ry)")
 
 u=fclat.dec_u(st.session_state['h_fclat'])
 f_pred=fclat(u)*f_scale+f_mean
