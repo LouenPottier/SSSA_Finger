@@ -77,7 +77,7 @@ D1=max(min(-fz*invrigi+D,D),14.)
 u=u*u_scale + u_mean
 X, Z = beam_from_endpoint(float(u[0,0]),float(u[0,1]),float(u[0,2]))
 
-fig2 = make_subplots(rows=1, cols=2,  subplot_titles=("Backward prediction", "Latent space visualization"))
+fig2 = make_subplots(rows=1, cols=1,  subplot_titles=("Backward prediction"))
 
 #subplot1
 fig2.add_trace(
@@ -146,7 +146,7 @@ fz=f_pred[0,2].detach()
 
 X, Z = beam_from_endpoint(float(u[0,0]),float(u[0,1]),float(u[0,2]))
 
-fig3 = make_subplots(rows=1, cols=2,  subplot_titles=("Backward prediction", "Latent space visualization"))
+fig3 = make_subplots(rows=1, cols=1,  subplot_titles=("Backward prediction"))
 
 #subplot1
 fig3.add_trace(
