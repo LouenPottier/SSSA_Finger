@@ -28,7 +28,11 @@ with st.sidebar:
     st.subheader('Pressure inside the beam')
     
     P = st.slider('P',0.,0.1,0.,0.01)
+
+    st.subheader('Plan Z position')
     D = st.slider('D',14.,24.,23.5,0.1)
+
+    st.subheader('Inverse stiffness of the plan in the Z direction')
     invrigi = st.slider('k^-1',0.,20.,0.,1.)
 
     
@@ -64,7 +68,7 @@ with st.sidebar:
 
 ##### PLOT FCLAT
 
-st.subheader("Neural Network without energy structure")
+st.subheader("Contact simulation with learned relation (P,fx,fz)=NN(ux,uz,ry)")
 
 u=fclat.dec_u(st.session_state['h_fclat'])
 f_pred=fclat(u)*f_scale+f_mean
