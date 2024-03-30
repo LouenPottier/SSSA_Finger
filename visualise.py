@@ -139,7 +139,7 @@ st.plotly_chart(fig2)
 
 index = torch.min(torch.abs(dP13-D)+torch.abs(p-P),0)[1]
 
-st.subheader("Closest in DB")
+st.subheader("(u,f) corresponding to the closest (P,D) value in DB")
 
 u=U[[int(index)]]*u_scale+u_mean
 
