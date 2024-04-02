@@ -289,7 +289,7 @@ def contact(D,P,invrigi=10.):
         u=proj(0.5*u+0.5*u0)
         x0=u[:,[0,2]]
         #x0[0,0]=x0[0,0]/2   
-        #x0[0,1]=x0[0,1]*    0
+        #x0[0,1]=x0[0,1]*0
 
         
         
@@ -347,6 +347,7 @@ def contact(D,P,invrigi=10.):
             #xn[0,1].data.clamp((-100.-u_mean[2])/u_scale[2],(0.-u_mean[2])/u_scale[2])
             xn.data=u[:,[0,2]]
             
+        u[:,1]=(52.1-D1-u_mean[1])/u_scale[1]
 
 
         
