@@ -109,8 +109,8 @@ fig2.add_trace(
 )
 
 
-fig2.add_annotation(x =  -Z[-1]-fz*50,
-                   y =  -X[-1]-fx*50,
+fig2.add_annotation(x =  -Z[-1]-fz*25,
+                   y =  -X[-1]-fx*25,
                    text = "",
                    xref = "x",
                    yref = "y",
@@ -168,8 +168,8 @@ fig3.add_trace(
 )
 
 
-fig3.add_annotation(x =  -Z[-1]-fz*50,
-                   y =  -X[-1]-fx*50,
+fig3.add_annotation(x =  -Z[-1]-fz*25,
+                   y =  -X[-1]-fx*25,
                    text = "",
                    xref = "x",
                    yref = "y",
