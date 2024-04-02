@@ -286,7 +286,7 @@ def contact(D,P,invrigi=10.):
         u[:,1]=(52.1-D1-u_mean[1])/u_scale[1]
 
 
-        u=proj(u)
+        u=proj(0.5*u+0.5*u0)
         x0=u[:,[0,2]]
         #x0[0,0]=x0[0,0]/2   
         #x0[0,1]=x0[0,1]*    0
