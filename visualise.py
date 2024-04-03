@@ -16,7 +16,7 @@ from streamlit_plotly_events import plotly_events
 from main import contact,  u_mean, u_scale, f_mean, f_scale, U, F, dP13, p, fclat
 
 
-from utils import beam_from_endpoint
+from utils import beam_from_endpoint, beam_from_endpoint_shape
 
 
 if 'h_fclat' not in st.session_state:
