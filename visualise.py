@@ -79,7 +79,7 @@ fz=f_pred[0,2].detach()
 D1=max(min(-fz*invrigi+D,D),14.)
 
 u=u*u_scale + u_mean
-X, Z = beam_from_endpoint(float(u[0,0]),float(u[0,1]),float(u[0,2]))
+X, Z = beam_from_endpoint_shape(float(u[0,0]),float(u[0,1]),float(u[0,2]))
 
 fig2 = make_subplots(rows=1, cols=1,  subplot_titles=("Backward prediction"))
 
@@ -125,9 +125,10 @@ fig2.add_annotation(x =  -Z[-1]-fz*25,
 
 
 
+fig2.update_layout(xaxis_range=[-56,10],yaxis_range=[-64,2])
 
-fig2.update_layout(xaxis_range=[-56,0],yaxis_range=[-56,0])
 
+fig2.update_layout(height=600,width=600)
 
 
 
@@ -148,7 +149,7 @@ f_pred=F[[int(index)]]*f_scale+f_mean
 fx=f_pred[0,1].detach()
 fz=f_pred[0,2].detach()
 
-X, Z = beam_from_endpoint(float(u[0,0]),float(u[0,1]),float(u[0,2]))
+X, Z = beam_from_endpoint_shape(float(u[0,0]),float(u[0,1]),float(u[0,2]))
 
 fig3 = make_subplots(rows=1, cols=1,  subplot_titles=("Backward prediction"))
 
@@ -184,8 +185,10 @@ fig3.add_annotation(x =  -Z[-1]-fz*25,
 
 
 
+fig3.update_layout(xaxis_range=[-56,10],yaxis_range=[-64,2])
 
-fig3.update_layout(xaxis_range=[-56,0],yaxis_range=[-56,0])
+
+fig3.update_layout(height=600,width=600)
 
 
 
